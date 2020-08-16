@@ -19,9 +19,11 @@
              exit("DB connection failed!");
          }
          if($_POST[del]){
+             //削除
             $delid=(int)$_POST[del];
             $del=pg_query($dbconn,"DELETE FROM slip where orderid=$delid");
          }
+         //注文ごとに表示
          $order_slip=pg_query($dbconn,"SELECT * FROM slip");
          for($i=0; $i<pg_num_rows($order_slip);$i++) {
             $row=pg_fetch_row($order_slip, $i);
@@ -43,12 +45,11 @@
                 <th scope=\"col\">メニュー</th>
                 <th scope=\"col\">個数</th>
                 </tr>";
+            //idからメニュー情報の取り出し
             $order_food=pg_query($dbconn,"SELECT * FROM food_order where orderid=$row[0]");
             for($j=0; $j<pg_num_rows($order_food); $j++) {
                 $food=pg_fetch_row($order_food, $j);
-                print_r($j);
                 print "<tr>";
-                print_r($food);
                 $food_info=pg_query($dbconn,"SELECT * FROM menu WHERE foodid=$food[1]");
                 $food_name=pg_fetch_row($food_info,0);
                 switch($food_name[3]){

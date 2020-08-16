@@ -6,10 +6,11 @@
             }
             $query = pg_query($dbconn,"SELECT * FROM menu");
             if($_POST[reset]){
+                //ユーザーの注文の修正時に依然の注文情報の削除
                 $reset_id=(int)$_POST[reset];
                 $reset = pg_query($dbconn,"DELETE FROM slip WHERE orderid=$reset_id");
             }
-            $date=date("Y-m-d\TH:i");
+            $date=date("Y-m-d\TH:i");//今日の日時を取得
 ?> 
 <!DOCTYPE html>
 <html>
@@ -49,6 +50,7 @@
                     for($i=0; $i<pg_num_rows($query);$i++) {
                         print "<tr>";
                         $row=pg_fetch_row($query, $i);
+                        //メニューの種類ごとに見やすいタグを付与
                         switch($row[3]){
                             case "box":
                                 print "<td><span class=\"badge badge-primary\">弁当</span>".$row[1]."</td>";
